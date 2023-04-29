@@ -1,0 +1,20 @@
+.Forum{
+    width: "100%";
+    min-width: fit-content;
+}
+
+.Forum-contents{
+    display:flex;
+    justify-content:center;
+    padding: 50px 0;
+     background-color: rgb(0,0,0,0.05);
+    min-width: fit-content;
+    width: 100%;
+
+}
+
+.Forum-content{
+    display: flex;
+    flex-direction: row;
+    padding: 0px 10px;
+}

@@ -1,0 +1,4 @@
+.SideNav{
+    margin-top: 10px;
+    flex: 0.2;   /* We want to use only the 20% part of the screen thats why flex is 0.2 */
+}
