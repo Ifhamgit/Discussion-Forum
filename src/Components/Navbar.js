@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import { AssignmentTurnedInRounded, FeaturedPlayListRounded,NotificationsRounded,PeopleAltRounded, Search } from '@mui/icons-material';
-import { Avatar, Button } from '@mui/material';
+import { AssignmentTurnedInRounded, Close, ExpandMoreRounded, FeaturedPlayListRounded,NotificationsRounded,PeopleAltRounded, Search } from '@mui/icons-material';
+import { Avatar, Button, Input} from '@mui/material';
 import "./css/Navbar.css"
- import logo from "../Images/Graphic-Blog-Marketing-Clio-Ap-unscreen.gif";
+import logo from "../Images/Graphic-Blog-Marketing-Clio-Ap-unscreen.gif";
+import Modal from 'react-responsive-modal';
+import "react-responsive-modal/styles.css"
 
 
 
 
 function Navbar() {
+
+
+  const[open, setOpen] = useState(false)
+  const[inputURL, setinputURL] = useState("")
+  
+  const close = (<Close/>)
+
   return (
     <div className='Fnav'>
         <div className="Fnav-content">
@@ -26,12 +35,71 @@ function Navbar() {
                 </div>
                 <div className="Fnav-input">
                     <Search/>
-                    <input type="text" placeholder='Search questions' />
+                    <input 
+                    type="text" 
+                    placeholder='Search questions'
+                    />
                 </div>
                 <div className="Fnav-remainder">
                     <Avatar/>
                 </div>
-                <Button variant="outlined">Add Question</Button>
+                <Button style={{marginLeft:"15px"}}  onClick={() => setOpen(true)} variant="outlined">Add Question</Button>
+                <Modal 
+                open = {open} 
+                closeIcon = {close} 
+                onClose={()=> setOpen(false)} 
+                closeOnEsc = {true}
+                center
+                closeOnOverlayClick = {false}
+                styles={{
+                  overlay:{
+                    height: "auto"
+                  }
+                }}
+                >
+                  <div className="modal-title">
+                    <h5>Add Question</h5>
+                    <h5>Share Link</h5>
+                  </div>
+                  <div className="modal-avatar">
+                    <Avatar className='avatar'/>
+                    <div className="modal-scope">
+                      <PeopleAltRounded/>
+                      <p>Public</p>
+                      <ExpandMoreRounded/>
+                      </div> 
+                  </div>
+                  <div className="modal-field">
+                    <Input type = "text" placeholder='Start your question here?' />
+                    <div className='modal-field-Link' style={{
+                        display:"flex",
+                        flexDirection:"column"
+                    }}>
+                      <input type="text" 
+                      placeholder='Optional: Include a link for the context'
+                      value={inputURL}
+                      onChange={(e)=> setinputURL(e.target.value)}
+                      />
+
+                      {inputURL !== "" &&
+                      <img 
+
+                          style={{
+                            height:"40vh",
+                            marginTop:"20px",
+                            objectFit:"contain"
+                          }}
+
+                      src={inputURL} alt="Link does not have any pic to display or cannot be dispalyed"/>
+                     }
+
+                    </div>
+                  </div>
+                  <div className="modal-buttons">
+                    <button className = 'cancel' onClick = {()=> setOpen(false)}> Cancel </button>
+                    <button type='submit' className = 'add'> Add Question </button>
+                  </div>
+                </Modal>
         </div>
       
     </div>
