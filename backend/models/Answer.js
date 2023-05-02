@@ -1,9 +1,9 @@
 const mongoose = require("mongoose")
 
 const AnswerSchema = new mongoose.Schema({
-    Answer: String,
+    answer: String,
     questionID:{
-        type: mongoos.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "questions"
     },
     

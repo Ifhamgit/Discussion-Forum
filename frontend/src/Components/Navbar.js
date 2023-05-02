@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import axios from "axios"
 import { AssignmentTurnedInRounded, Close, ExpandMoreRounded, FeaturedPlayListRounded,NotificationsRounded,PeopleAltRounded, Search } from '@mui/icons-material';
 import { Avatar, Button, Input} from '@mui/material';
 import "./css/Navbar.css"
@@ -15,8 +16,35 @@ function Navbar() {
 
   const[open, setOpen] = useState(false)
   const[inputURL, setinputURL] = useState("")
+  const [question, setQuestion] = useState()
   
   const close = (<Close/>)
+
+  const handleSubmit = async()=>{
+
+     if(question !== "" ){
+
+      const config = {
+        headers:{
+          "Content-Type": "application/json"
+        }
+      }
+
+      const body = {
+        questionName: question,
+        questionUrl:inputURL
+      }
+
+      await axios.post("/api/question", body, config).then((res)=>{
+
+        console.log(res.data)
+
+      }).catch((e)=>{
+
+        console.log(e)
+      })
+     }
+  }
 
   return (
     <div className='Fnav'>
@@ -70,7 +98,12 @@ function Navbar() {
                       </div> 
                   </div>
                   <div className="modal-field">
-                    <Input type = "text" placeholder='Start your question here?' />
+                    <Input 
+                    value ={question}
+                    onChange={(e)=>setQuestion(e.target.value)} 
+                    type = "text" 
+                    placeholder='Start your question here?' 
+                    />
                     <div className='modal-field-Link' style={{
                         display:"flex",
                         flexDirection:"column"
@@ -97,7 +130,7 @@ function Navbar() {
                   </div>
                   <div className="modal-buttons">
                     <button className = 'cancel' onClick = {()=> setOpen(false)}> Cancel </button>
-                    <button type='submit' className = 'add'> Add Question </button>
+                    <button onClick={handleSubmit} type='submit' className = 'add'> Add Question </button>
                   </div>
                 </Modal>
         </div>
