@@ -9,7 +9,9 @@ router.post("/", async(req,res)=>{
 
         await answerDB.create({
             answer:req.body.answer,
-            questionID: req.body.questionID
+            questionID: req.body.questionID,
+            user:req.body.user,
+
         }).then(()=>{
             res.status(201).send({
                 status:true,

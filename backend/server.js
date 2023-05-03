@@ -9,7 +9,7 @@ const db = require("./db")
 const router = require("./routes")
 
 //database connection
-
+app.use(cors())
 db.connect()
 
 //middle-ware
@@ -41,7 +41,7 @@ app.get("*", (req,res)=>{
 
 })
 
-app.use(cors())
+
 
 //server listening
 

@@ -7,6 +7,11 @@ import "./css/Navbar.css"
 import logo from "../Images/Graphic-Blog-Marketing-Clio-Ap-unscreen.gif";
 import Modal from 'react-responsive-modal';
 import "react-responsive-modal/styles.css"
+import {signOut} from "firebase/auth"
+import {auth} from "../Firebase"
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectUser } from '../Feature/userSlice';
+// import reFetching from "./Feed"
 
 
 
@@ -16,11 +21,14 @@ function Navbar() {
 
   const[open, setOpen] = useState(false)
   const[inputURL, setinputURL] = useState("")
-  const [question, setQuestion] = useState()
+  const [question, setQuestion] = useState("")
   
   const close = (<Close/>)
 
-  const handleSubmit = async()=>{
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
+
+ const handleSubmit = async()=>{
 
      if(question !== "" ){
 
@@ -32,18 +40,31 @@ function Navbar() {
 
       const body = {
         questionName: question,
-        questionUrl:inputURL
+        questionUrl:inputURL,
+        user:user
       }
 
-      await axios.post("/api/question", body, config).then((res)=>{
+      await axios.post("http://localhost:8000/api/question", body, config).then((res)=>{
 
         console.log(res.data)
+        setOpen(false)
+        // reFetching()
 
       }).catch((e)=>{
 
         console.log(e)
+        // e.preventDefault()
+        //  window.location.href = "/"
+
       })
      }
+  }
+
+  const handleLogout=()=>{
+    if(window.confirm("Are you sure to logout?"))
+    signOut(auth).then(()=>{
+      dispatch(logout())
+    })
   }
 
   return (
@@ -69,7 +90,8 @@ function Navbar() {
                     />
                 </div>
                 <div className="Fnav-remainder">
-                    <Avatar/>
+                  <span onClick = {handleLogout}><Avatar src = {user?.photo}/></span>
+                    
                 </div>
                 <Button style={{marginLeft:"15px"}}  onClick={() => setOpen(true)} variant="outlined">Add Question</Button>
                 <Modal 
@@ -90,7 +112,7 @@ function Navbar() {
                     <h5>Share Link</h5>
                   </div>
                   <div className="modal-avatar">
-                    <Avatar className='avatar'/>
+                    <Avatar src = {user?.photo} className='avatar'/>
                     <div className="modal-scope">
                       <PeopleAltRounded/>
                       <p>Public</p>
@@ -140,3 +162,4 @@ function Navbar() {
 }
 
 export default Navbar
+

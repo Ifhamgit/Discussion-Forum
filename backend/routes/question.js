@@ -12,6 +12,7 @@ router.post("/", async (req, res) =>{
 
             questionName: req.body.questionName,
             questionUrl: req.body.questionUrl,
+            user:req.body.user,
 
         }).then(()=>{
             res.status(201).send({
@@ -45,7 +46,7 @@ router.get("/", async (req,res)=>{
         {
             //lookup is use to fetch data from other table using the given ID
             $lookup:{
-                from: "answer", //collection to join
+                from: "answers", //collection to join
                 localField: "_id", //field from the input document
                 foreignField: "questionID",
                 as:"allAnswers" //output array  field
